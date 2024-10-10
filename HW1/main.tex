@@ -1,0 +1,341 @@
+% 请确保文件编码为utf-8，使用XeLaTex进行编译，或者通过overleaf进行编译
+
+\documentclass[answers]{exam}  % 使用此行带有作答模块
+% \documentclass{exam} % 使用此行只显示题目
+
+\usepackage{xeCJK}
+\usepackage{zhnumber}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{enumerate}
+
+\title{2024秋季高级机器学习 \\ 习题一}
+\date{2024.10.9}
+\pagestyle{headandfoot}
+\author{221300079 王俊童}
+\firstpageheadrule
+\firstpageheader{南京大学}{2024秋季高级机器学习}{习题一}
+\runningheader{南京大学}
+{2024秋季高级机器学习}
+{习题一}
+\runningheadrule
+\firstpagefooter{}{第\thepage\ 页（共\numpages 页）}{}
+\runningfooter{}{第\thepage\ 页（共\numpages 页）}{}
+
+% no box for solutions
+% \unframedsolutions
+
+\setlength\linefillheight{.5in}
+
+% \renewcommand{\solutiontitle}{\noindent\textbf{答：}}
+\renewcommand{\solutiontitle}{\noindent\textbf{解：}\par\noindent}
+
+\renewcommand{\thequestion}{\zhnum{question}}
+\renewcommand{\questionlabel}{\thequestion .}
+\renewcommand{\thepartno}{\arabic{partno}}
+\renewcommand{\partlabel}{\thepartno .}
+
+\def\dist{{\mathrm{dist}}}
+\def\x{{\boldsymbol{x}}}
+\def\w{{\boldsymbol{w}}}
+
+
+\begin{document}
+% \normalsize
+\maketitle
+
+\begin{questions}
+
+\question [30] \textbf{机器学习导论复习题(前九章)}
+
+\begin{parts}
+
+ \part [10] 
+ 
+    给定包含 $m$ 个样例的数据集 $D=\left\{\left(\boldsymbol{x}_1, y_1\right),\left(\boldsymbol{x}_2, y_2\right), \cdots,\left(\boldsymbol{x}_m, y_m\right)\right\}$, 其中$y_i \in \mathbb{R}$ 为 $\boldsymbol{x}_i$ 的实数标记，$\boldsymbol{x}_i=\left(x_{i 1} ; x_{i 2} ; \cdots ; x_{i d}\right) \in$ $\mathbb{R}^d$。针对数据集 $D$ 中的 $m$ 个示例, 教材 3.2 节所介绍的 “线性回归”模型要求该线性模型的预测结果和其对应的标记之间的误差之和最小：
+    
+    \begin{align}
+        \left(\boldsymbol{w}^*, b^*\right) & =\frac{1}{2} \underset{(\boldsymbol{w}, b)}{\arg \min } \sum_{i=1}^m\left(f\left(\boldsymbol{x}_i\right)-y_i\right)^2 \\ \notag
+        & =\frac{1}{2} \underset{(\boldsymbol{w}, b)}{\arg \min } \sum_{i=1}^m\left(y_i-\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b\right)\right)^2,
+    \end{align}
+
+    即寻找一组权重 $(\boldsymbol{w}, b)$, 使其对 $D$ 中示例预测的整体误差最小。定义 $\boldsymbol{y}=\left[y_1 ; \ldots; y_m\right] \in \mathbb{R}^m$, 且 $\boldsymbol{X}=$ $\left[\boldsymbol{x}_1^{\top} ; \boldsymbol{x}_2^{\top} ; \cdots ; \boldsymbol{x}_m^{\top}\right] \in \mathbb{R}^{m \times d}$, 线性回归的优化过程可以使用矩阵进行表示：
+
+    \begin{align}
+        \left(\boldsymbol{w}^*, b^*\right) & =\underset{\boldsymbol{w}, b}{\arg \min } \frac{1}{2}\left(\boldsymbol{X} \boldsymbol{w}+\boldsymbol{1}_m b-\boldsymbol{y}\right)^{\top}\left(\boldsymbol{X} \boldsymbol{w}+\boldsymbol{1}_m b-\boldsymbol{y}\right) \\ \notag
+        & =\underset{\boldsymbol{w}, b}{\arg \min } \frac{1}{2}\left\|\boldsymbol{X} \boldsymbol{w}+\boldsymbol{1}_m b-\boldsymbol{y}\right\|_2^2,
+    \end{align}
+
+
+    其中, $ \boldsymbol{1}_m \in \mathbb{R}^m$ 为元素全为 1 、长度为 $m$ 的向量。在实际问题中, 我们常常会遇到示例相对较少, 而特征很多的场景。 在这类情况中如果直接求解线性回归模型, 较少的示例无法获得唯一的模型参数, 会具有多个模型能够 "完美" 拟合训练集中的所有样例。此外, 模型很容易过拟合。为缓解这些问题，常引入正则化项 $\Omega(\boldsymbol{w})$, 通常形式如下:
+
+    \begin{align}
+        \boldsymbol{w}_{\text {Ridge }}^*, b_{\text {Ridge }}^*=\underset{\boldsymbol{w}, b}{\arg \min } \frac{1}{2}\left\|\boldsymbol{X} \boldsymbol{w}+\boldsymbol{1}_m b-\boldsymbol{y}\right\|_2^2+\lambda \Omega(\boldsymbol{w}),
+    \end{align}
+
+
+    其中, $\lambda>0$ 为正则化参数。正则化表示了对模型的一种偏好, 例如 $\Omega(\boldsymbol{w})$ 一般对模型的复杂度进行约束, 因此相当于从多个在训练集上表现同等预测结果的模型中选出模型复杂度最低的一个。考虑岭回归问题, 即设置正则项 $\Omega(\boldsymbol{w})=\|\boldsymbol{w}\|_2^2$。
+
+    （1）（3 points）请证明对于任何矩阵 $\boldsymbol{X} \in \mathbb{R}^{m \times d}$, 下式均成立
+    
+    \begin{align}
+        \left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)^{-1} \boldsymbol{X}=\boldsymbol{X}\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)^{-1}.
+    \end{align}
+    
+    （2）（7 points）请给出岭回归的最优解 $\boldsymbol{w}_{\text {Ridge }}^*$ 和 $b_{\text {Ridge }}^*$ 的闭式解表达式, 并使用矩阵形式表示, 分析其最优解和原始线性回归最优解 $\boldsymbol{w}_{\text{LS}}^*$ 和 $b_{\text{LS}}^*$ 的区别。
+    
+
+
+    \part [10] 
+
+    教材 4.2 节中给出度量样本集合纯度的常用指标, 从而衍生出决策树属性选择的常用准则。假设决策树分类问题中标记空间 $\mathcal{Y}$ 的大小为 $|\mathcal{Y}|$，训练集 $D$ 中第 $k$ 类样本所占比例为 $p_k(k=1,2, \ldots,|\mathcal{Y}|)$ 。请回答以下问题:
+    
+    （1）（3 points） 信息熵 $\operatorname{Ent}(D)$ 定义如下
+
+    \begin{align}
+        \operatorname{Ent}(D)=-\sum_{k=1}^{|\mathcal{Y}|} p_k \log _2 p_k,
+    \end{align}
+
+    请证明信息熵的上下界为
+
+    \begin{align}
+        0 \leq \operatorname{Ent}(D) \leq \log _2|\mathcal{Y}|,
+    \end{align}
+
+    并给出等号成立的条件。
+    
+    （2）（3 points） 除信息熵外，教材中也介绍了基尼指数衡量纯度，定义如下
+
+    \begin{align}
+        \sum_{k=1}^{|\mathcal{Y}|} \sum_{k^{\prime} \neq k} p_k p_{k^{\prime}}=1-\sum_{k=1}^{|\mathcal{Y}|} p_k^2,
+    \end{align}
+    
+    由于在决策树叶结点中使用包含样例最多的类别作为其预测结果，因此也可使用误分类错误率
+
+    \begin{align}
+        1-\max _k p_k,
+    \end{align}
+
+    作为衡量指标。请给出二分类问题（ $|\mathcal{Y}|=2 $，正类所占比例为$p$, 负类为$1-p$） 下三种衡量标准的表达式。
+
+    （3）（4 points） 在 ID3 决策树的生成过程中, 需要计算信息增益以生成新的结点。设离散属性 $a$ 有 $V$ 个可能取值 $\left\{a^1, a^2, \cdots, a^V\right\}$ ，请参考教材 4.2.1节相关符号的定义证明:
+
+    \begin{align}
+        \operatorname{Gain}(D, a)=\operatorname{Ent}(D)-\sum_{v=1}^V \frac{\left|D^v\right|}{|D|} \operatorname{Ent}\left(D^v\right) \geq 0,
+    \end{align}
+    
+    即信息增益非负。
+
+
+    \part [10] 给定训练集 $D=\left\{\left(\boldsymbol{x}_1, \boldsymbol{y}_1\right),\left(\boldsymbol{x}_2, \boldsymbol{y}_2\right), \ldots,\left(\boldsymbol{x}_m, \boldsymbol{y}_m\right)\right\}$. 其中 $\boldsymbol{x}_i \in \mathbb{R}^d, \boldsymbol{y}_i \in \mathbb{R}^l$ 表示输入示例由 $d$个属性描述，输出 $l$ 维实值向量. 教材图5.7给出了一个有 $d$ 个输入神经元、 $l$ 个输出神经元、 $q$ 个隐层神经元的多层神经网络，其中输出层第 $j$ 个神经元的阈值用 $\theta_j$ 表示，隐层第 $h$ 个神经元的阈值用 $\gamma_h$ 表示。输入层第 $i$ 个神经元与隐层第 $h$ 个神经元之间的连接权为 $v_{i h}$ ，隐层第 $h$ 个神经元与输出层第 $j$ 个神经元之间的连接权为 $w_{h j}$ 。记隐层第 $h$ 个神经元接收到的输入为 $\alpha_h=\sum_{i=1}^d v_{i h} x_i$, 输出层第 $j$ 个神经元接收到的输入为 $\beta_j=\sum_{h=1}^q w_{h j} b_h$ ，其中 $b_h$ 为隐层第 $h$ 个神经元的输出。
+
+不同任务中神经网络的输出层往往使用不同的激活函数和损失函数，本题介绍几种常见的激活和损失函数，并对其梯度进行推导。
+
+（1）（3 points） 在二分类问题中 $(l=1)$, 标记 $y \in\{0,1\}$ ，一般使用 Sigmoid 函数作为激活函数，使输出值在 $[0,1]$范围内，使模型预测结果可直接作为概率输出．Sigmoid 函数的输出一般配合二元交叉熵损失函数使用，对于一个训练样本 $(\boldsymbol{x}, y)$ 有
+
+    \begin{align}
+            \ell\left(y, \hat{y}_1\right)=-\left[y \log \left(\hat{y}_1\right)+(1-y) \log \left(1-\hat{y}_1\right)\right],
+    \end{align}
+
+
+记 $\hat{y}_1$ 为模型将样本判断为正例的预测概率，请计算 $\frac{\partial \ell\left(y, \hat{y}_1\right)}{\partial \beta_1}$。
+
+（2）（5 points） 当 $l>1$ ，网络的预测结果为 $\hat{\boldsymbol{y}} \in \mathbb{R}^l$ ，其中 $\hat{y}_i$ 表示输入被预测为第 $i$ 类的概率。对于第 $i$ 类的样本，其标记 $\boldsymbol{y} \in\{0,1\}^l$ ，有 $y_i=1, y_j=0, j \neq i$ 。对于一个训练样本 $(\boldsymbol{x}, \boldsymbol{y})$ ，交叉熵损失函数 $\ell(\boldsymbol{y}, \hat{\boldsymbol{y}})$ 的定义如下
+
+    \begin{align}
+        \ell(\boldsymbol{y}, \hat{\boldsymbol{y}})=-\sum_{j=1}^l y_j \log \hat{y}_j,
+    \end{align}
+    
+    
+    在多分类问题中，一般使用 Softmax 函数作为输出层激活函数，其计算公式如下
+    
+     \begin{align}
+        \hat{y}_j=\frac{e^{\beta_j}}{\sum_{k=1}^l e^{\beta_k}},
+    \end{align}
+    
+    
+    易见 Softmax 函数输出的 $\hat{\boldsymbol{y}}$ 符合 $\sum_{j=1}^l \hat{y}_j=1$ ，所以可以直接作为每个类别的概率. Softmax 函数输出一般配合交叉熵损失函数使用，请计算 $\frac{\partial \ell(\boldsymbol{y}, \hat{\boldsymbol{y}})}{\partial \boldsymbol{\beta}}$ 。
+    
+    （3）（2 points）分析在二分类中使用 Softmax 激活函数和 Sigmoid 激活函数的联系与区别。
+    
+    
+    \end{parts}
+
+\begin{solution}
+	\begin{parts}
+		\part 
+        (1)要证明$\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)^{-1} \boldsymbol{X}=\boldsymbol{X}\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)^{-1}$.根据题目可知
+        $\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)$和$\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)$两者是满秩的，所以可逆性可以得到证明。\\
+        然后首先左乘$\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)$，然后右乘$\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)$。即可得到：$\boldsymbol{X}\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right) = 
+        \boldsymbol{X}\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)$,所以对于任意的X，均可证明其对于这个式子均成立。
+		\par 
+        (2)可得原问题如下：$\boldsymbol{w}_{\text {Ridge }}^*, b_{\text {Ridge }}^*=\underset{\boldsymbol{w}, b}{\arg \min } \frac{1}{2}\left\|\boldsymbol{X} \boldsymbol{w}+\boldsymbol{1}_m b-\boldsymbol{y}\right\|_2^2+\lambda ||\boldsymbol{w}||_2^2$\\
+        首先化简原问题：$\frac{1}{2}( \boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{X}\boldsymbol{w} + 2b \boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{1}_m - 2\boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{y} + mb^2 -2mb\boldsymbol{y}^T\boldsymbol{1}_m + \boldsymbol{y}^T \boldsymbol{y}) + \lambda \boldsymbol{w}^T \boldsymbol{w}$\\
+        对w求偏导，用拉格朗日乘子法得到:$(\boldsymbol{X}^T\boldsymbol{X} + 2\lambda \boldsymbol{I}_d) \boldsymbol{w} = \boldsymbol{X}^T (\boldsymbol{y} - \boldsymbol{1}_m b)$\\
+        $\boldsymbol{w} = (\boldsymbol{X}^T\boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T(\boldsymbol{y} - \boldsymbol{1}_m b)$\\
+        对b求偏导：$b = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{w})$\\
+        把W得到的偏导带入b可以得到：$(\boldsymbol{X}^T \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)\boldsymbol{w} = \boldsymbol{X}^T (y - \boldsymbol{1}_m \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{w} \boldsymbol{X}))$\\
+        可解:$\boldsymbol{w}_{\text {Ridge }}^* = (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y}$\\
+        带入b可得：$\boldsymbol{b}_{\text {Ridge }}^* = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y})$\\
+
+        对于原始闭式解来说，跟上式基本差不多，少了正则化项：\\
+        可解:$\boldsymbol{w}_{\text {LS }}^* = (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X})^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y}$\\
+        带入b可得：$\boldsymbol{b}_{\text {LS }}^* = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X})^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y})$\\
+
+        对于岭回归和原线性回归来说，岭回归多了一个$2\lambda\boldsymbol{1}_m$,而就是这个正则化后的项使得原始式子在w的最优解时那个逆变得可逆了，因为如果不加这个正则化项，原解
+        并不一定是可逆的，就不一定有稳定解。当$\lambda > 0$的时候，w的范数可能就较小，可以防止过拟合，特别是在特征数量较多而样本数量较少的情形下。同理对于b，b的闭式解收到w的影响
+        岭回归里面引入的正则化项也可以影响到b从而使得整个解答更加稳定。
+        \part 
+        (1)首先证明下界：由于log函数定义在0到正无穷上而概率约束全部都大于0，所以信息熵肯定是一个大于零的数据。取到0的情况可以是假如只有一个标记空间里面的p刚好为1，其余的全是0，那么根据
+        定义可以证明得到整个式子相加等于0。或者k=1的时候，pk就是1，log1等于0，总体也为0.\\
+        其次证明下界：首先说明，当所有的概率取值相等都是$\frac{1}{|y|}$的时候，取到最大值$log_2 |y|$.\\
+        证明如下：可以证明若存在两个概率x和1-x，可以根据信息熵的定义证明：$z = -(xlogx + (1-x)log(1-x))$,$z' = -log \frac{x}{1-x}$。当
+        $x = \frac{1}{2}$时，最大，$0 \leq x < \frac{1}{2}$,单调递增，$\frac{1}{2} \leq x < 1$,单调递减。那么根据这个道理，每次我们取最大和最小的概率
+        分别作为$x_1,x_2$,可得$-(plogp + (x_1 + x_2 - p)log(x_1 + x_2 - p)) > -(x_1 logx_1 + x_2logx_2)$.那么每次都可以做这种合并，做了n-1次之后，
+        由于概率约束相加总和为1，可以得到结果为$-plogp$,当p为$\frac{1}{|y|}$的时候，结果为上界答案。
+        \par
+        (2)假设一个概率是p，另一个是1-p：\\
+        信息熵：$Ent(D) = -plogp - (1-p)log(1-p)$\\
+        Gini index:$Gini(p) = 1 - (p^2 + (1-p)^2) = 2p(1-p)$\\
+        误分类错误率:$Err = 1 - max(p, 1-p)$.当p大于0.5的时候，取1-p。当p小于0.5的时候，取p\\    
+        \par
+        (3)可得这个-log2是一个凸函数，根据jensen不等式:$f(\sum_{i=1}^{n}\lambda_i x_i) \leq \sum_{i=1}^{n} \lambda_i f(x_i)$.
+        对于这个$Ent(D^v) = - \sum_{k=1}^{|y|} p_k^v log_2 p_k^v, \sum_{v=1}^{V}\frac{|D^v|}{|D|} Ent(D^v) = - \sum_{v=1}^{V}\frac{|D^v|}{|D|}\sum_{k=1}^{|y|} p_k^v log_2 p_k^v$\\
+        由jensen可得：$\sum_{v=1}^{V}\frac{|D^v|}{|D|}\sum_{k=1}^{|y|} p_k^v log_2 p_k^v \leq \sum_{k=1}^{|y|}(\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v) log_2 (\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v)$\\
+        而$ (\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v) = p_k$,所以$\sum_{k=1}^{|y|}(p_k) log_2 (p_k) = Ent(D)$\\
+        所以可得$\operatorname{Gain}(D, a)=\operatorname{Ent}(D)-\sum_{v=1}^V \frac{\left|D^v\right|}{|D|} \operatorname{Ent}\left(D^v\right) \geq 0$
+		\part 
+        (1)由于激活函数是sigmoid：$f(x)' = f(x)(1-f(x))$可以得到。由链式法则可以得到:\\
+        $\frac{\partial l}{\partial \beta_1} = \frac{\partial l}{\partial \hat{y}_1} \frac{\partial \hat{y}_1}{\partial \beta_1} = \frac{\hat{y}_1 - y_1}{\hat{y}_1(1- \hat{y}_1)} * \hat{y}_1(1- \hat{y}_1) = \hat{y}_1 - y_1$\\
+        (2)可以得到l的偏导数如下:$\frac{\partial l}{\partial \hat{y}_j} = \frac{-y_j}{\hat{y}_j}$\\
+        $\hat{y}_j=\frac{e^{\beta_j}}{\sum_{k=1}^l e^{\beta_k}}$对于这个函数求导可以分情况，若$\hat{y}_j$对于$\beta_i$求导：\\
+        当i=j：$\frac{\partial \hat{y}_j}{\partial \beta_j} = \frac{e^{\beta_j} \sum_{k=1}^{l}e^{\beta_k} - e^{\beta_j} e^{\beta_j}  }{(\sum_{k=1}^{l}e^{\beta_k})^2} = \hat{y}_j ( 1 - \hat{y}_j)$\\
+        当i不等于j:$\frac{\partial \hat{y}_j}{\partial \beta_j} = \frac{e^{\beta_j}e^{\beta_i}}{(\sum_{k=1}^{l}e^{\beta_k})^2} = -\hat{y}_j\hat{y}_i$\\
+        所以同上，链式法则可以得到:\\
+        $\frac{\partial l}{\partial \beta_i} = \sum_{l}^{j=1} \frac{\partial l}{\partial \hat{y}_j}\frac{\partial \hat{y}_j}{\partial \hat{\beta}_i}$\\
+        当i=j:$\frac{\partial l}{\partial \beta_i} = \hat{y}_j - y_j$\\
+        当i不等于j:$-y_j \hat{y}_i$\\
+        所以如果要求：$\frac{\partial \ell(\boldsymbol{y}, \hat{\boldsymbol{y}})}{\partial \boldsymbol{\beta}} = [\frac{\partial l}{\partial \beta_1},...,\frac{\partial l}{\partial \beta_l} ]=\boldsymbol{\hat{y}} - \boldsymbol{y}$.
+        此处$\boldsymbol{\hat{y}} = [\hat{y}_1,...,\hat{y}_l], \boldsymbol{y} = [y_1,...,y_l]$.\\
+        (3)联系：从数学形式上看，如果将Softmax函数应用于二分类问题，设$\beta_1 = \beta,\beta_2 = 0$差不多是这个形式。且对于softmax:$\hat{y}_1 = \frac{e^{\beta}}{e^{\beta} + e^{0}} = \frac{1}{1 + e^{-\beta}}$.
+        恰好就是Sigmoid函数的形式。这表明在二分类的特定情况下，Softmax函数可以退化为与Sigmoid函数形式相同的表达式.都可以映射到0和1区间。\\
+        区别：sigmoid输出是一个值，表示某一类的概率，但是softmax明确的表示了两类的概率。且sigmoid计算简单，softmax复杂度高。且搭配不一样的损失函数效果不一样。\\
+
+	\end{parts}
+\end{solution}
+
+\question [30] \textbf{PCA降维}
+
+
+教材 10.3 节介绍了主成分分析 (Principal Component Analysis, PCA) 方法对数据进行降维。本题考察 PCA 相关的线性代数基础知识以及基本操作。给定 $d$ 维空间中 $m$ 个样本构成的矩阵为
+\begin{align}
+X = [x_1^\top; \dots; x_m^\top] \in \mathbb{R}^{m \times d},
+\end{align}
+$\hat{X} \in \mathbb{R}^{m \times d}$ 为 $X$ 中心化后得到的矩阵。根据教材 10.3 节讨论，严格的协方差矩阵具有 $\frac{1}{m-1}$ 因子， 由于常数对本题分析结果无影响，所以在本题的讨论中忽略该常数因子。
+\begin{enumerate}
+    \item （6 points）$\hat{X}^\top \hat{X}$ 和 $\hat{X} \hat{X}^\top$ 为什么是半正定矩阵？二者的特征值有什么联系？受此启发，请思考当特征维度远大于样本个数时 ($d \gg m$)，使用特征值分解求解 PCA 应如何执行将更加高效？
+    \item （6 points）奇异值分解定义如下：
+    
+    \vspace{\baselineskip}令 $\hat{X} \in \mathbb{R}^{m \times d}$，则存在正交矩阵 $U \in \mathbb{R}^{m \times m}$ 和 $V \in \mathbb{R}^{d \times d}$ 使得：
+    \begin{align}
+        \hat{X} = U \Sigma V^\top,
+    \end{align}
+    其中
+    \begin{align}
+    \Sigma = \begin{bmatrix}
+    \Sigma_1 & 0 \\
+    0 & 0
+    \end{bmatrix},
+    \end{align}
+    并且 $\Sigma_1 = \text{diag}(\sigma_1, \sigma_2, \dots, \sigma_r)$，其对角线元素按数值大小排序：
+    \begin{align}
+        \sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_r > 0, \quad r = \text{rank}(\hat{X}),
+    \end{align}
+
+    当矩阵 $\hat{X}$ 的秩 $r = \text{rank}(\hat{X}) < h$ 时，奇异值分解可以进行截尾，从而可简化为：
+    \begin{align}
+        \hat{X} = U_r \Sigma_r V_r^\top,
+    \end{align}
+    式中
+    \begin{align}
+        U_r = (u_1, u_2, \dots, u_r), V_r = (v_1, v_2, \dots, v_r), \Sigma_r = \text{diag}(\sigma_1, \sigma_2, \dots, \sigma_r),
+    \end{align}
+    这种奇异值分解方式，被称为薄奇异值分解 (Thin SVD)。
+    
+    \vspace{\baselineskip}在实现 PCA 时，往往使用奇异值分解 (SVD) 而非特征值分解求解。请说明奇异值与特征值的关系，如果可以获得 $\hat{X}$ 的奇异值分解， 应如何使用 PCA 对 $\hat{X}$ 进行降维？请分析使用 SVD 求解 PCA 相比于使用特征值分解求解 PCA 的优势。
+    
+    \item （8 points）PCA 的一个重要步骤是将误差路径最小化重构误差， 请说明为什么在最小化重构误差之前需要对数据进行中心化。
+    
+    \item （10 points）针对以下样本矩阵 (包含 5 个示例, 每个示例 2 维)，请对其进行主成分分析，将样本降至二维，并写出详细计算过程。
+    \begin{align}
+    X^\top = \begin{pmatrix}
+    3 & 4 & 4 & 6 & 3 \\
+    2 & 3 & 2 & 3 & 0
+    \end{pmatrix}
+    \end{align}
+\end{enumerate}
+
+\begin{solution}
+\begin{parts}
+	\part
+	\part
+     \part
+     \part
+\end{parts}
+\end{solution}
+
+\question [40] \textbf{度量学习应用}
+
+度量学习旨在学习一个适用于某个任务的距离度量，等价于为实现某个距离度量找到合适的特征变换。
+
+\begin{parts}
+\part [20] 教材 10.6 节介绍了马氏距离:
+\begin{align}
+    dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = \|x_i - x_j\|_M^2,
+\end{align}
+在标准的马氏距离中，$M$ 为样本协方差矩阵的逆 $\Sigma^{-1}$。而在度量学习中，$M$ 是一个可学习的半正定矩阵 ($M \succeq 0$)，度量学习的过程可以看成一个优化 $M$ 的过程。请回答以下问题：
+
+\begin{enumerate}
+    \item （6 points）标准的马氏距离去除了变量之间的相关性，并且与量纲无关。结合 PCA 中关于协方差矩阵的相关知识，请解释马氏距离为什么有这些优点。(提示：可将协方差矩阵进行特征值分解，重写M及上式)
+    \item （2 points）标准马氏距离中 $M$ 为协方差矩阵的逆，是否存在某些情况下协方差矩阵不可逆，应该如何应对这个问题？
+    \item （4 points）不同于人工设定 $M$，度量学习在给定目标函数的条件下优化出半正定矩阵 $M$。结合教材 9.3 节对距离度量的介绍，请说明马氏距离是否是标准的距离度量（是否满足距离度量的四个性质）？
+    \item （8 points）教材 3.4 节介绍的监督降维方法线性判别分析 LDA 以及 10.3 节介绍的无监督降维方法主成分分析 PCA 均可视为特殊的度量学习方法。简单来说，首先对样本进行降维，并在降维后空间中计算样本之间的欧氏距离作为距离度量。参考教材中的定义，类内散度矩阵 $S_w$ 为每个类别的散度矩阵之和，类间散度矩阵 $S_b$ 为每个类别与类中心的协方差矩阵。请写出 LDA 和 PCA 对应的马氏距离中的 $M$，并说明 LDA 和 PCA 的异同。（提示：将两种方法与度量学习进行关联）
+\end{enumerate}
+
+\part [20] 度量学习方法一般需学习一个半正定的距离度量矩阵, 其目标函数是一个半正定规划 (Semi-Definite Programming, SDP) 问题, 是一类特殊的凸优化问题。
+
+\vspace{\baselineskip}注：半正定规划有以下形式
+\[
+\min_{X \in \mathcal{S}_+} \langle C, X \rangle \\
+\]
+\[
+\text{s.t.} \quad \langle A_k, X \rangle \leq b_k, \quad k = 1, \dots, m,
+\]
+其中 $X, C, A_k \ (k = 1, \dots, m)$ 均为 $d \times d$ 方阵。$\langle A, B \rangle = \text{tr}(A^\top B) = \sum_{i=1}^d \sum_{j=1}^d A_{ij} B_{ij}$，$\mathcal{S}_+$ 表示半正定矩阵的集合。
+
+\vspace{\baselineskip}本题以 LMNN 为例，探究度量学习的优化方式。
+\begin{enumerate}
+    \item （5 points）相比于线性或二次优化，半正定优化的求解较为缓慢。请推导 LMNN 损失函数对于 $M$ 的梯度。若要保证 $M$ 求解后为对称矩阵，$M$ 需要如何初始化？
+    \item （10 points）使用梯度下（5 points）降法求解 $M$ 时，需保证 $M$ 满足半正定约束。常见的做法是使用投影梯度下降（Projected Gradient Descent, PGD）方法在每次更新 $M$ 时将其投影到半正定矩阵集合 $\mathcal{S}_+$ 中。半正定投影等价于求解如下问题：
+    \begin{align}
+        \arg\min_{\hat{M}} \|\hat{M} - M\|_F^2 \quad \text{s.t.} \quad \hat{M} \in \mathcal{S}_+,
+    \end{align}
+    假设对称矩阵 $M$ 的特征值分解为 $M = Q \Lambda Q^\top$，其中 $Q Q^\top = I$ 为正交矩阵，$\Lambda$ 为特征值构成的对角矩阵。请证上述问题的解为 $\hat{M} = Q {\Lambda}^{+} Q^\top$，其中 ${\Lambda}^{+}$ 表示将 $\Lambda$ 中的非负元素不变，负元素置零。
+    \item （5 points）将任意半正定矩阵分解为投影矩阵，即 $M = P P^\top$，则 LMNN 可转化为关于 $P$ 的无约束优化问题。请推导 LMNN 损失关于 $P$ 的梯度。该问题是凸优化问题吗？
+\end{enumerate}
+\end{parts}
+
+\begin{solution}
+\begin{parts}
+	\part
+	\part
+\end{parts}
+\end{solution}
+
+\end{questions}
+
+\end{document}
