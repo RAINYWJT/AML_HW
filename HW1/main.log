@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  11 OCT 2024 00:01
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  11 OCT 2024 11:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -604,11 +604,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 201--205
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 212--227
+Underfull \hbox (badness 10000) in paragraph at lines 212--226
 
  []
 
-[3] [4] [5] [6]
+[3] [4]
+Underfull \hbox (badness 10000) in paragraph at lines 284--290
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 301--307
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 322--326
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 331--333
+
+ []
+
+[5] [6] [7]
 This exam contains 3 questions with 5 parts, 0 subparts, and 0 subsubparts.
 (./main.aux)
  ***********
@@ -619,12 +639,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 16356 strings out of 474773
- 344981 string characters out of 5757724
+ 16357 strings out of 474773
+ 344989 string characters out of 5757724
  1973839 words of memory out of 5000000
- 38307 multiletter control sequences out of 15000+600000
+ 38308 multiletter control sequences out of 15000+600000
  568240 words of font info for 93 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 74i,14n,81p,730b,720s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 74i,15n,81p,730b,715s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (6 pages).
+Output written on main.pdf (7 pages).
