@@ -170,21 +170,54 @@
 		\part 
         (1)要证明$\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)^{-1} \boldsymbol{X}=\boldsymbol{X}\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)^{-1}$.根据题目可知
         $\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)$和$\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)$两者是满秩的，所以可逆性可以得到证明。\\
-        然后首先左乘$\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)$，然后右乘$\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)$。即可得到：$\boldsymbol{X}\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right) = 
-        \boldsymbol{X}\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)$,所以对于任意的X，均可证明其对于这个式子均成立。
+        然后首先左乘$\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)$，然后右乘$\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right)$。即可得到：
+        \[
+            \boldsymbol{X}\left(\boldsymbol{X}^{\top} \boldsymbol{X}+\lambda \boldsymbol{I}_d\right) = 
+            \boldsymbol{X}\left(\boldsymbol{X} \boldsymbol{X}^{\top}+\lambda \boldsymbol{I}_m\right)
+        \]
+        所以对于任意的X，均可证明其对于这个式子均成立。
 		\par 
-        (2)可得原问题如下：$\boldsymbol{w}_{\text {Ridge }}^*, b_{\text {Ridge }}^*=\underset{\boldsymbol{w}, b}{\arg \min } \frac{1}{2}\left\|\boldsymbol{X} \boldsymbol{w}+\boldsymbol{1}_m b-\boldsymbol{y}\right\|_2^2+\lambda ||\boldsymbol{w}||_2^2$\\
-        首先化简原问题：$\frac{1}{2}( \boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{X}\boldsymbol{w} + 2b \boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{1}_m - 2\boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{y} + mb^2 -2mb\boldsymbol{y}^T\boldsymbol{1}_m + \boldsymbol{y}^T \boldsymbol{y}) + \lambda \boldsymbol{w}^T \boldsymbol{w}$\\
-        对w求偏导，用拉格朗日乘子法得到:$(\boldsymbol{X}^T\boldsymbol{X} + 2\lambda \boldsymbol{I}_d) \boldsymbol{w} = \boldsymbol{X}^T (\boldsymbol{y} - \boldsymbol{1}_m b)$\\
-        $\boldsymbol{w} = (\boldsymbol{X}^T\boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T(\boldsymbol{y} - \boldsymbol{1}_m b)$\\
-        对b求偏导：$b = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{w})$\\
-        把W得到的偏导带入b可以得到：$(\boldsymbol{X}^T \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)\boldsymbol{w} = \boldsymbol{X}^T (y - \boldsymbol{1}_m \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{w} \boldsymbol{X}))$\\
-        可解:$\boldsymbol{w}_{\text {Ridge }}^* = (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y}$\\
-        带入b可得：$\boldsymbol{b}_{\text {Ridge }}^* = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y})$\\
+        (2)可得原问题如下：
+        \[
+            \boldsymbol{w}_{\text {Ridge }}^*, b_{\text {Ridge }}^*=\underset{\boldsymbol{w}, b}{\arg \min } \frac{1}{2}\left\|\boldsymbol{X} \boldsymbol{w}+\boldsymbol{1}_m b-\boldsymbol{y}\right\|_2^2+\lambda ||\boldsymbol{w}||_2^2
+        \]
+        首先化简原问题：
+        \[
+            \frac{1}{2}( \boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{X}\boldsymbol{w} + 2b \boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{1}_m - 2\boldsymbol{w}^T \boldsymbol{X}^T \boldsymbol{y} + mb^2 -2mb\boldsymbol{y}^T\boldsymbol{1}_m + \boldsymbol{y}^T \boldsymbol{y}) + \lambda \boldsymbol{w}^T \boldsymbol{w}
+        \]
+        对w求偏导，用拉格朗日乘子法得到:
+        \[
+            (\boldsymbol{X}^T\boldsymbol{X} + 2\lambda \boldsymbol{I}_d) \boldsymbol{w} = \boldsymbol{X}^T (\boldsymbol{y} - \boldsymbol{1}_m b)
+        \]
+        \[
+            \boldsymbol{w} = (\boldsymbol{X}^T\boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T(\boldsymbol{y} - \boldsymbol{1}_m b)
+        \]
+        对b求偏导：
+        \[
+            b = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} \boldsymbol{w})
+        \]
+        把W得到的偏导带入b可以得到：
+        \[
+            (\boldsymbol{X}^T \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)\boldsymbol{w} = \boldsymbol{X}^T (y - \boldsymbol{1}_m \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{w} \boldsymbol{X}))
+        \]
+        可解:
+        \[
+            \boldsymbol{w}_{\text {Ridge }}^* = (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y}
+        \]
+        带入b可得：
+        \[
+            \boldsymbol{b}_{\text {Ridge }}^* = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X} + 2\lambda \boldsymbol{I}_d)^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y})
+        \]
 
         对于原始闭式解来说，跟上式基本差不多，少了正则化项：\\
-        可解:$\boldsymbol{w}_{\text {LS }}^* = (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X})^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y}$\\
-        带入b可得：$\boldsymbol{b}_{\text {LS }}^* = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X})^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y})$\\
+        可解:
+        \[
+            \boldsymbol{w}_{\text {LS }}^* = (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X})^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y}
+        \]
+        带入b可得：
+        \[
+            \boldsymbol{b}_{\text {LS }}^* = \frac{1}{m} \boldsymbol{1}_m^T (\boldsymbol{y} - \boldsymbol{X} (\boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{X})^{-1} \boldsymbol{X}^T (E - \frac{1}{m}\boldsymbol{1}\boldsymbol{1}_m) \boldsymbol{y})
+        \]
 
         对于岭回归和原线性回归来说，岭回归多了一个$2\lambda\boldsymbol{1}_m$,而就是这个正则化后的项使得原始式子在w的最优解时那个逆变得可逆了，因为如果不加这个正则化项，原解
         并不一定是可逆的，就不一定有稳定解。当$\lambda > 0$的时候，w的范数可能就较小，可以防止过拟合，特别是在特征数量较多而样本数量较少的情形下。同理对于b，b的闭式解收到w的影响
@@ -193,33 +226,87 @@
         (1)首先证明下界：由于log函数定义在0到正无穷上而概率约束全部都大于0，所以信息熵肯定是一个大于零的数据。取到0的情况可以是假如只有一个标记空间里面的p刚好为1，其余的全是0，那么根据
         定义可以证明得到整个式子相加等于0。或者k=1的时候，pk就是1，log1等于0，总体也为0.\\
         其次证明下界：首先说明，当所有的概率取值相等都是$\frac{1}{|y|}$的时候，取到最大值$log_2 |y|$.\\
-        证明如下：可以证明若存在两个概率x和1-x，可以根据信息熵的定义证明：$z = -(xlogx + (1-x)log(1-x))$,$z' = -log \frac{x}{1-x}$。当
-        $x = \frac{1}{2}$时，最大，$0 \leq x < \frac{1}{2}$,单调递增，$\frac{1}{2} \leq x < 1$,单调递减。那么根据这个道理，每次我们取最大和最小的概率
-        分别作为$x_1,x_2$,可得$-(plogp + (x_1 + x_2 - p)log(x_1 + x_2 - p)) > -(x_1 logx_1 + x_2logx_2)$.那么每次都可以做这种合并，做了n-1次之后，
-        由于概率约束相加总和为1，可以得到结果为$-plogp$,当p为$\frac{1}{|y|}$的时候，结果为上界答案。
+        证明如下：可以证明若存在两个概率x和1-x，可以根据信息熵的定义证明：
+        \[    
+            z = -(xlogx + (1-x)log(1-x)),z' = -log \frac{x}{1-x}
+        \]
+        当$x = \frac{1}{2}$时，最大，$0 \leq x < \frac{1}{2}$,单调递增，$\frac{1}{2} \leq x < 1$,单调递减。那么根据这个道理，每次我们取最大和最小的概率
+        分别作为$x_1,x_2$,可得
+        \[
+            -(plogp + (x_1 + x_2 - p)log(x_1 + x_2 - p)) > -(x_1 logx_1 + x_2logx_2)
+        \]
+        那么每次都可以做这种合并，做了n-1次之后，由于概率约束相加总和为1，可以得到结果为$-plogp$,当p为$\frac{1}{|y|}$的时候，结果为上界答案。
         \par
         (2)假设一个概率是p，另一个是1-p：\\
-        信息熵：$Ent(D) = -plogp - (1-p)log(1-p)$\\
-        Gini index:$Gini(p) = 1 - (p^2 + (1-p)^2) = 2p(1-p)$\\
-        误分类错误率:$Err = 1 - max(p, 1-p)$.当p大于0.5的时候，取1-p。当p小于0.5的时候，取p\\    
+        信息熵：
+        \[
+            Ent(D) = -plogp - (1-p)log(1-p)
+        \]
+        Gini index:
+        \[
+            Gini(p) = 1 - (p^2 + (1-p)^2) = 2p(1-p)
+        \]
+        误分类错误率:
+        \[
+            Err = 1 - max(p, 1-p)
+        \]
+        当p大于0.5的时候，取1-p。当p小于0.5的时候，取p\\    
         \par
-        (3)可得这个-log2是一个凸函数，根据jensen不等式:$f(\sum_{i=1}^{n}\lambda_i x_i) \leq \sum_{i=1}^{n} \lambda_i f(x_i)$.
-        对于这个$Ent(D^v) = - \sum_{k=1}^{|y|} p_k^v log_2 p_k^v, \sum_{v=1}^{V}\frac{|D^v|}{|D|} Ent(D^v) = - \sum_{v=1}^{V}\frac{|D^v|}{|D|}\sum_{k=1}^{|y|} p_k^v log_2 p_k^v$\\
-        由jensen可得：$\sum_{v=1}^{V}\frac{|D^v|}{|D|}\sum_{k=1}^{|y|} p_k^v log_2 p_k^v \leq \sum_{k=1}^{|y|}(\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v) log_2 (\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v)$\\
-        而$ (\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v) = p_k$,所以$\sum_{k=1}^{|y|}(p_k) log_2 (p_k) = Ent(D)$\\
+        (3)可得这个-log2是一个凸函数，根据jensen不等式:
+        \[
+            f(\sum_{i=1}^{n}\lambda_i x_i) \leq \sum_{i=1}^{n} \lambda_i f(x_i)
+        \]
+        对于这个
+        \[
+            Ent(D^v) = - \sum_{k=1}^{|y|} p_k^v log_2 p_k^v, \sum_{v=1}^{V}\frac{|D^v|}{|D|} Ent(D^v) = - \sum_{v=1}^{V}\frac{|D^v|}{|D|}\sum_{k=1}^{|y|} p_k^v log_2 p_k^v
+        \]
+        由jensen可得：
+        \[
+            \sum_{v=1}^{V}\frac{|D^v|}{|D|}\sum_{k=1}^{|y|} p_k^v log_2 p_k^v \leq \sum_{k=1}^{|y|}(\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v) log_2 (\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v)
+        \]
+        而
+        \[
+            (\sum_{v=1}^{V}\frac{|D^v|}{|D|} p_k^v) = p_k
+        \]
+        所以
+        \[
+            \sum_{k=1}^{|y|}(p_k) log_2 (p_k) = Ent(D)
+        \]
         所以可得$\operatorname{Gain}(D, a)=\operatorname{Ent}(D)-\sum_{v=1}^V \frac{\left|D^v\right|}{|D|} \operatorname{Ent}\left(D^v\right) \geq 0$
 		\part 
-        (1)由于激活函数是sigmoid：$f(x)' = f(x)(1-f(x))$可以得到。由链式法则可以得到:\\
-        $\frac{\partial l}{\partial \beta_1} = \frac{\partial l}{\partial \hat{y}_1} \frac{\partial \hat{y}_1}{\partial \beta_1} = \frac{\hat{y}_1 - y_1}{\hat{y}_1(1- \hat{y}_1)} * \hat{y}_1(1- \hat{y}_1) = \hat{y}_1 - y_1$\\
-        (2)可以得到l的偏导数如下:$\frac{\partial l}{\partial \hat{y}_j} = \frac{-y_j}{\hat{y}_j}$\\
+        (1)由于激活函数是sigmoid：$f(x)' = f(x)(1-f(x))$可以得到。由链式法则可以得到:
+        \[
+            \frac{\partial l}{\partial \beta_1} = \frac{\partial l}{\partial \hat{y}_1} \frac{\partial \hat{y}_1}{\partial \beta_1} = \frac{\hat{y}_1 - y_1}{\hat{y}_1(1- \hat{y}_1)} * \hat{y}_1(1- \hat{y}_1) = \hat{y}_1 - y_1
+        \]
+        (2)可以得到l的偏导数如下:
+        \[
+            \frac{\partial l}{\partial \hat{y}_j} = \frac{-y_j}{\hat{y}_j}
+        \]
         $\hat{y}_j=\frac{e^{\beta_j}}{\sum_{k=1}^l e^{\beta_k}}$对于这个函数求导可以分情况，若$\hat{y}_j$对于$\beta_i$求导：\\
-        当i=j：$\frac{\partial \hat{y}_j}{\partial \beta_j} = \frac{e^{\beta_j} \sum_{k=1}^{l}e^{\beta_k} - e^{\beta_j} e^{\beta_j}  }{(\sum_{k=1}^{l}e^{\beta_k})^2} = \hat{y}_j ( 1 - \hat{y}_j)$\\
-        当i不等于j:$\frac{\partial \hat{y}_j}{\partial \beta_j} =- \frac{e^{\beta_j}e^{\beta_i}}{(\sum_{k=1}^{l}e^{\beta_k})^2} = -\hat{y}_j\hat{y}_i$\\
+        当i=j：
+        \[
+            \frac{\partial \hat{y}_j}{\partial \beta_j} = \frac{e^{\beta_j} \sum_{k=1}^{l}e^{\beta_k} - e^{\beta_j} e^{\beta_j}  }{(\sum_{k=1}^{l}e^{\beta_k})^2} = \hat{y}_j ( 1 - \hat{y}_j)
+        \]
+        当i不等于j:
+        \[
+            \frac{\partial \hat{y}_j}{\partial \beta_j} =- \frac{e^{\beta_j}e^{\beta_i}}{(\sum_{k=1}^{l}e^{\beta_k})^2} = -\hat{y}_j\hat{y}_i
+        \]
         所以同上，链式法则可以得到:\\
-        $\frac{\partial l}{\partial \beta_i} = \sum_{l}^{j=1} \frac{\partial l}{\partial \hat{y}_j}\frac{\partial \hat{y}_j}{\partial \hat{\beta}_i}$\\
-        当i=j:$\frac{\partial l}{\partial \beta_i} = \hat{y}_j - y_j$\\
-        当i不等于j:$-y_j \hat{y}_i$\\
-        所以如果要求：$\frac{\partial \ell(\boldsymbol{y}, \hat{\boldsymbol{y}})}{\partial \boldsymbol{\beta}} = [\frac{\partial l}{\partial \beta_1},...,\frac{\partial l}{\partial \beta_l} ]= - [y_1(1-\hat{y}_1,...,y_n(1-\hat{y}_n))] $\\
+        \[
+            \frac{\partial l}{\partial \beta_i} = \sum_{l}^{j=1} \frac{\partial l}{\partial \hat{y}_j}\frac{\partial \hat{y}_j}{\partial \hat{\beta}_i}
+        \]
+        当i=j:
+        \[
+            \frac{\partial l}{\partial \beta_i} = \hat{y}_j - y_j
+        \]
+        当i不等于j:
+        \[
+            -y_j \hat{y}_i
+        \]
+        所以如果要求：
+        \[
+            \frac{\partial \ell(\boldsymbol{y}, \hat{\boldsymbol{y}})}{\partial \boldsymbol{\beta}} = [\frac{\partial l}{\partial \beta_1},...,\frac{\partial l}{\partial \beta_l} ]= - [y_1(1-\hat{y}_1,...,y_n(1-\hat{y}_n))] 
+        \]
         (3)联系：从数学形式上看，如果将Softmax函数应用于二分类问题，设$\beta_1 = \beta,\beta_2 = 0$差不多是这个形式。且对于softmax:$\hat{y}_1 = \frac{e^{\beta}}{e^{\beta} + e^{0}} = \frac{1}{1 + e^{-\beta}}$.
         恰好就是Sigmoid函数的形式。这表明在二分类的特定情况下，Softmax函数可以退化为与Sigmoid函数形式相同的表达式.都可以映射到0和1区间。\\
         区别：sigmoid输出是一个值，表示某一类的概率，但是softmax明确的表示了两类的概率。且sigmoid计算简单，softmax复杂度高。且搭配不一样的损失函数效果不一样。\\
@@ -281,17 +368,28 @@ $\hat{X} \in \mathbb{R}^{m \times d}$ 为 $X$ 中心化后得到的矩阵。根�
 \begin{solution}
 \begin{parts}
 	\part
-    对于任意的非零y，我们可以得到:$y^T (\hat{X}^T \hat{X}) y = (y\hat{X})^T Xy$,考虑到向量内积的形式，这个式子可以写作:$||\hat{X}y||^2 \geq 0$,所以这个是半正定的。
+    对于任意的非零y，我们可以得到:
+    \[
+        y^T (\hat{X}^T \hat{X}) y = (y\hat{X})^T Xy
+    \]
+    考虑到向量内积的形式，这个式子可以写作:$||\hat{X}y||^2 \geq 0$,所以这个是半正定的。
     对于$\hat{X}\hat{X}^T$的证明同上。\\
     对于两者的特征值，我们可以得到，假设:$(\hat{X}^T\hat{X})v = \lambda v$,同时左乘$\hat{X}$,$\hat{X}\hat{X}^T\hat{X} v = \lambda \hat{X} v$
-    化简得到:$(\hat{X}\hat{X}^T) (\hat{X} v) = \lambda (\hat{X} v)$，说明$\hat{X}^T\hat{X}$的特征值也是$\hat{X}\hat{X}^T$的特征值，反之亦然。
+    化简得到:
+    \[
+        (\hat{X}\hat{X}^T) (\hat{X} v) = \lambda (\hat{X} v)
+    \]
+    说明$\hat{X}^T\hat{X}$的特征值也是$\hat{X}\hat{X}^T$的特征值，反之亦然。
     这样就说明了这两个矩阵具有相同的非零特征值，假设有r个，对于第一个矩阵是一个d*d维度的，那就是d-r个零特征值，第二个矩阵是m*m维度的那就是m-r个特征值。\\
     由于这个规律，我们面对d维度远远大于m维度的时候，我们可以先解这个m*m维度的矩阵，因为剩下的全是0特征值，那么这样计算复杂度就会大大的降低。\\
 
     \part
     首先说明奇异值和特征值的关系，奇异值的平方等于特征值,证明如下:\\
     $A = U\Sigma V^T,(A^T A)v = \lambda v$，由于U，V都是正交矩阵，所以将奇异值分解结果带入特征值分解可以得到:
-    $V^T\Sigma^T U U \Sigma V^T = \Sigma^T \Sigma v = \lambda v$,所以$\sigma_i^2 = \lambda_i$.\\
+    \[
+        V^T\Sigma^T U U \Sigma V^T = \Sigma^T \Sigma v = \lambda v
+    \]
+    所以$\sigma_i^2 = \lambda_i$.\\
     如果可以获得矩阵的奇异值分解结果，我们可以知道对于一个m*d的矩阵来说，d*d的分解矩阵V保留了其主成分的信息。所以假设我们要取前k个维度的特征（降维到k）
     可以选取前k个最大奇异值对应的V中的列向量，然后$\hat{X}_{new} = \hat{X}V_k$,其中$V_k = (v_1, ..., v_k)$.这样就可以完成PCA对于矩阵的降维。\\
     优势：SVD的应用比特征值更广泛。SVD的稳定性比特征值更好，因为如果有接近0的情形的时候，SVD处理矩阵比特征值更加稳定。且若对于一个大矩阵d*d维度像第一问提到的那样，
@@ -303,7 +401,7 @@ $\hat{X} \in \mathbb{R}^{m \times d}$ 为 $X$ 中心化后得到的矩阵。根�
     $Cov(X) = \frac{1}{m-1}\sum_{i=1}^{m}(x_i - \bar{x})(x_i - \bar{x})^T$，如果不进行中心化，计算协方差时需要考虑每个数据点的绝对坐标，更复杂。\\
     2.可以确保主成分方向的合理性：如果不中心化，主成分方向可能会偏向于数据中心所在的位置，而不是真正反映数据内部变化最大的方向。而中心化后，数据的中心移到原点，主成分方向能够更准确地反映数据在各个维度上的相对变化情况。\\
     3.确保降维数据的合理性：如果有一个特征特别大，那就有可能导致小特征被忽视。中心化可以保证公平.\\
-    4.标准化之后有利于后续算法的收敛.\\
+    4.中心化之后有利于后续算法的收敛.\\
 
     \part   
     首先可以计算均值如下：$\bar{X}_1 = \frac{3+4+4+6+3}{5} = 4,\bar{X}_2 = \frac{2+3+2+3+0}{5} = 2$,所以中心化后的矩阵是:
@@ -384,30 +482,111 @@ $\hat{X} \in \mathbb{R}^{m \times d}$ 为 $X$ 中心化后得到的矩阵。根�
 \begin{solution}
 \begin{parts}
 	\part
-    (1)协方差矩阵特征值分解可以表示为:$\Sigma = Q \Lambda Q^T, \Lambda = diag(\lambda_1, ... ,\lambda_d) $.\\
-    所以可以得到：$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = (x_i - x_j)^\top \Sigma^{-1} (x_i - x_j) =(x_i - x_j)^\top Q \Lambda^{-1} Q^T (x_i - x_j) $\\
-    令$y_i = Q^T x_i, y_j = Q^T x_j$,则原来的式子可以写为:$dist_{\text{mah}}^2(x_i, x_j) = (y_i - y_j)^T \Lambda^{-1} (y_i - y_j) = \sum_{k=1}^{d}\frac{(x_i - x_j)^2}{\lambda_k}$.\\
+    (1)协方差矩阵特征值分解可以表示为:
+    \[
+        \Sigma = Q \Lambda Q^T, \Lambda = diag(\lambda_1, ... ,\lambda_d) 
+    \]
+    所以可以得到：
+    \[
+        dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = (x_i - x_j)^\top \Sigma^{-1} (x_i - x_j) =(x_i - x_j)^\top Q \Lambda^{-1} Q^T (x_i - x_j)
+    \]
+    令$y_i = Q^T x_i, y_j = Q^T x_j$,则原来的式子可以写为:
+    \[
+        dist_{\text{mah}}^2(x_i, x_j) = (y_i - y_j)^T \Lambda^{-1} (y_i - y_j) = \sum_{k=1}^{d}\frac{(x_i - x_j)^2}{\lambda_k}
+    \]
     首先其认为标准马氏距离去除了变量之间的相关性，因为其进行了$y_i = Q^T x_i, y_j = Q^T x_j$的变换，从而目前是在一个新的坐标系下面的距离计算，去除了相关性。\\
     其次其认为与量纲无关是因为$\lambda_k$本身作为特征值反映了数据的一定特性，但是现在输入维度都被其特征值调整，使得马氏距离和量纲没有关系了，因为比如一个数据比较大，那么其特征值肯定也很大，一除之后肯定会被调整掉。\\
+    
     (2)对于协方差矩阵不可逆的情况，我认为有两种解决思路，第一个是像岭回归一样，引入一个很小的正则化项，既不会对于特征值排序和计算结果产生影响，也能够保证矩阵可逆。
     当然还有一个思路，就是对于不可逆的地方，将维度降下去，降到我们需要的满足可逆情况的矩阵，再进行计算。\\
+    
     (3)根据标准距离度量来看，具有这四个性质：非负性，同一性，对称性，直递性。\\
-    首先证明非负性:$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j)$,由于M矩阵是一个半正定的，令$y = (x_i - x_j)$,$y^T M y \geq 0$,当且仅当$x_i = x_j$时候，等于0.\\
-    同一性:当$x_i = x_j$的时候， $dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$；反之若$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$由于M是个半正定矩阵，只可能在$x_i = x_j$时候整个式子为0.\\
-    对称性:\\$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = ((x_j - x_i)^T)^T M (x_j - x_i) = dist_{\text{mah}}^2(x_j, x_i)$\\
-    直递性(三角不等式):$dist_{\text{mah}}^2(x_i, x_j) \leq dist_{\text{mah}}^2(x_i, x_k) + dist_{\text{mah}}^2(x_k, x_j)$\\
-    令$a = (x_i - x_k), b = (x_k - x_j), (x_i -x_j) = a+b$，所以$dist_{\text{mah}}^2(x_i, x_j) = (a+b)^T M (a+b)$,$dist_{\text{mah}}^2(x_i, x_k) = a^T M a$,$dist_{\text{mah}}^2(x_k, x_j) = b^T M b$\\
-    则可以得到,$dist_{\text{mah}}^2(x_i, x_j) =a^T M a + 2a^T M b + b^T M b $,\\
-    由柯西不等式得到:$a^T M b \leq \sqrt{(a^T M b)(a^T M b)}$,所以可以得到原式子:\\
-    $dist_{\text{mah}}^2(x_i, x_j) \leq a^T M a +  \sqrt{(a^T M b)(a^T M b)} + b^T M b = (\sqrt{a^T Ma}\sqrt{b^T Mb}) = dist_{\text{mah}}^2(x_i, x_k) + dist_{\text{mah}}^2(x_k, x_j)$,所以QED。\\
+    3.1非负性:$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j)$,由于M矩阵是一个半正定的，令$y = (x_i - x_j)$,$y^T M y \geq 0$,当且仅当$x_i = x_j$时候，等于0.\\
+    
+    3.2同一性:当$x_i = x_j$的时候， $dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$；反之若$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$由于M是个半正定矩阵，只可能在$x_i = x_j$时候整个式子为0.\\
+    
+    3.3对称性:
+    \[
+        dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = ((x_j - x_i)^T)^T M (x_j - x_i) = dist_{\text{mah}}^2(x_j, x_i)
+    \]
+    
+    3.4直递性(三角不等式):$dist_{\text{mah}}^2(x_i, x_j) \leq dist_{\text{mah}}^2(x_i, x_k) + dist_{\text{mah}}^2(x_k, x_j)$\\
+    令$a = (x_i - x_k), b = (x_k - x_j), (x_i -x_j) = a+b$，所以
+    \[
+        dist_{\text{mah}}^2(x_i, x_j) = (a+b)^T M (a+b),dist_{\text{mah}}^2(x_i, x_k) = a^T M a,dist_{\text{mah}}^2(x_k, x_j) = b^T M b
+    \]
+    则可以得到:
+    \[
+        dist_{\text{mah}}^2(x_i, x_j) =a^T M a + 2a^T M b + b^T M b 
+    \]
+    由柯西不等式得到:$a^T M b \leq \sqrt{(a^T M b)(a^T M b)}$,所以可以得到原式子:
+    \[
+        dist_{\text{mah}}^2(x_i, x_j) \leq a^T M a +  \sqrt{(a^T M b)(a^T M b)} + b^T M b = (\sqrt{a^T Ma}\sqrt{b^T Mb}) = 
+    \]    
+    \[
+        dist_{\text{mah}}^2(x_i, x_k) + dist_{\text{mah}}^2(x_k, x_j)
+    \]
+    所以QED。\\
     (4)对于多类LDA来说，有$S_w = \sum_{i=1}^{n}S_wi, S_b = \sum_{i=1}^{n} (\mu_i - \mu)^T (\mu_i - \mu)$，对于这个的解如下$S_b W = \lambda S_w W$,为了对应马氏距离，其M可以这样表示$M = S_w^{-1}S_b$\\
     对于PCA来说，$M = \Sigma^{-1}$.\\
     相同点：他们都是将数据从高维降维到低维的技术，并且在降维之后都是用样本在低维空间的欧式距离作为距离度量，并选取不同的M矩阵来反映其特点的。\\
     不同点：PCA是无监督的，考虑的是最大可分和最小重构，而LDA是一种监督的降维方法，目的是最大化类间散度和最小类内散度。且他们的M选取不一样，PCA考虑的是特征值分解之后的特征值更多，而LDA考虑的是数据之间的聚类和簇之间的关系，是一种Global和local的衡量方式。\\
 	\part
-    (1)\\
-    (2)\\
+    (1)感觉这个地方说的不是很清楚？确定是描述的损失函数？这个地方感觉从论文里面来看应该是cost函数，如下所示，如果是loss的话应该是hingeloss：
+    \[
+        L(M) = \sum_{i,j} \eta_{ij} d_M(x_i, x_j) + c \sum_{i,j,k} \eta_{ij} (1 - y_{ik}) [1 + d_M(x_i, x_j) - d_M(x_i, x_k)]_+
+    \]
+    对于论文中d的描述，其为马氏距离,求得如下：\\
+    \[
+        \frac{\partial d_M(x_i, x_j)}{\partial M} = \frac{\partial (x_i - x_j)^\top M (x_i - x_j)}{\partial M} = (x_i - x_j)(x_i - x_j)^\top
+    \]
+    带入可得：
+    \[
+        \frac{\partial L(M)}{\partial M} = \sum_{i,j} \eta_{ij} (x_i - x_j)(x_i - x_j)^\top + c \sum_{i,j,k} \eta_{ij} (1 - y_{ik}) [1 + d_M(x_i, x_j) - d_M(x_i, x_k) + (x_i - x_j)(x_i - x_k)^\top]
+    \]
+    若要保证M求解后为对称矩阵，可以初始化M为单位矩阵M=I。或者也可以对于初始化矩阵做转置除以2:$M = \frac{1}{2} (N + N^T)$.\\
+    (2)首先可以明确原问题如下：\\
+    \[
+        \arg\min_{\hat{M}} |\hat{M} - M|_F^2 \quad \text{s.t.} \quad \hat{M} \in \mathcal{S}+
+    \]
+    由于F范数可以表示为如下：\\
+    \[
+        |A|_F^2 =  \sum_{i=1}^{n}\sum_{j=1}^{m} A_{ij}^2
+    \]
+    原问题可化简:且由于$Q^T Q = I$:\\
+    \[
+        |\hat{M} - M|_F^2 = |Q \hat{\Lambda} Q^\top - Q \Lambda Q^\top|_F^2 = |Q (\hat{\Lambda} - \Lambda) Q^\top|_F^2 = |\hat{\Lambda} - \Lambda|_F^2
+    \]
+    则原问题化简为:\\
+    \[
+        \arg\min_{\hat{\Lambda}} |\hat{\Lambda} - \Lambda|_F^2 \quad \text{s.t.} \quad \hat{\Lambda} \ge 0
+    \]
+    对于这个求其f范数:\\
+    \[
+        |\hat{\Lambda} - \Lambda|_F^2 =  \sum_{i=1}^{n}\sum_{j=1}^{m} (\hat{\Lambda}_{ij} - \Lambda_{ij})^2
+    \]
+    那么很显然对于这个式子的最小化，应该负数置零，正数项表示不变。所以得到解为：\\
+    \[
+        \hat{M} = Q \hat{\Lambda}^+ Q^\top
+    \]  
+
     (3)\\
+    根据问题2.1，可以得到重写的马氏距离为：
+    \[
+        d_M(x_i, x_j) = (x_i - x_j)^\top P P^\top (x_i - x_j) = |P^\top (x_i - x_j)|_2^2
+    \]
+    带入L的损失函数得到：
+    \[
+        L(P) = \sum_{i,j} \eta_{ij} |P^\top (x_i - x_j)|2^2 + c \sum{i,j,k} \eta_{ij} (1 - y_{ik}) [1 + |P^\top (x_i - x_j)|_2^2 - |P^\top (x_i - x_k)|2^2]
+    \]
+    求导:
+    \[
+        \frac{\partial L(P)}{\partial P} = 2 \sum_{i,j} \eta_{ij} P (x_i - x_j)(x_i - x_j)^\top + 2c \sum_{i,j,k} \eta_{ij} (1 - y_{ik}) 
+    \]
+    \[
+        [1 + |P^\top (x_i - x_j)|_2^2 - |P^\top (x_i - x_k)|_2^2+ \left( P (x_i - x_j)(x_i - x_j)^\top - P (x_i - x_k)(x_i - x_k)^\top \right) ]
+    \]
+    但是该问题不一定是凸的，因为$M  = P^T P$是一个二次的且$P^TP$是半正定的，那就不一定是个凸问题了，这种一般是非凸的。
 \end{parts}
 \end{solution}
 
