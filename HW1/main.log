@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  14 OCT 2024 23:27
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  16 OCT 2024 15:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -639,12 +639,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 496--498
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 499--500
+Underfull \hbox (badness 10000) in paragraph at lines 499--501
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 521--528
+Underfull \hbox (badness 10000) in paragraph at lines 502--507
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 511--513
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 519--522
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 524--526
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 528--530
 
  []
 
@@ -654,47 +674,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 532--534
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 540--543
+Underfull \hbox (badness 10000) in paragraph at lines 536--538
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 545--547
+Underfull \hbox (badness 10000) in paragraph at lines 540--544
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 549--551
+Underfull \hbox (badness 10000) in paragraph at lines 549--553
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 553--555
+Underfull \hbox (badness 10000) in paragraph at lines 555--557
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 557--559
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 561--565
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 570--574
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 576--578
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 584--586
+Underfull \hbox (badness 10000) in paragraph at lines 563--565
 
  []
 

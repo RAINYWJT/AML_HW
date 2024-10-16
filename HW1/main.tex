@@ -496,33 +496,12 @@ $\hat{X} \in \mathbb{R}^{m \times d}$ 为 $X$ 中心化后得到的矩阵。根�
     (3)根据标准距离度量来看，具有这四个性质：非负性，同一性，对称性，直递性。\\
     3.1非负性:$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j)$,由于M矩阵是一个半正定的，令$y = (x_i - x_j)$,$y^T M y \geq 0$,当且仅当$x_i = x_j$时候，等于0.\\
     
-    3.2同一性:当$x_i = x_j$的时候， $dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$；反之若$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$由于M是个半正定矩阵，只可能在$x_i = x_j$时候整个式子为0.\\
+    3.2同一性:当$x_i = x_j$的时候， $dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$；反之若$dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = 0$由于M是个半正定矩阵，将其拆解为$P^TP$
+    ，但是这个P并不可以保证其转置是一个满秩矩阵，那么就不成立了.\\
     
-    3.3对称性:
-    \[
-        dist_{\text{mah}}^2(x_i, x_j) = (x_i - x_j)^\top M (x_i - x_j) = ((x_j - x_i)^T)^T M (x_j - x_i) = dist_{\text{mah}}^2(x_j, x_i)
-    \]
-    
-    3.4直递性(三角不等式):$dist_{\text{mah}}^2(x_i, x_j) \leq dist_{\text{mah}}^2(x_i, x_k) + dist_{\text{mah}}^2(x_k, x_j)$\\
-    令$a = (x_i - x_k), b = (x_k - x_j), (x_i -x_j) = a+b$，所以
-    \[
-        dist_{\text{mah}}^2(x_i, x_j) = (a+b)^T M (a+b),dist_{\text{mah}}^2(x_i, x_k) = a^T M a,dist_{\text{mah}}^2(x_k, x_j) = b^T M b
-    \]
-    则可以得到:
-    \[
-        dist_{\text{mah}}^2(x_i, x_j) =a^T M a + 2a^T M b + b^T M b 
-    \]
-    由柯西不等式得到:$a^T M b \leq \sqrt{(a^T M b)(a^T M b)}$,所以可以得到原式子:
-    \[
-        dist_{\text{mah}}^2(x_i, x_j) \leq a^T M a +  \sqrt{(a^T M b)(a^T M b)} + b^T M b = (\sqrt{a^T Ma}\sqrt{b^T Mb}) = 
-    \]    
-    \[
-        dist_{\text{mah}}^2(x_i, x_k) + dist_{\text{mah}}^2(x_k, x_j)
-    \]
-    所以QED。\\
-    (4)对于多类LDA来说，有$S_w = \sum_{i=1}^{n}S_wi, S_b = \sum_{i=1}^{n} (\mu_i - \mu)^T (\mu_i - \mu)$，对于这个的解如下$S_b W = \lambda S_w W$,为了对应马氏距离，其M可以这样表示$M = S_w^{-1}S_b$\\
-    对于PCA来说，$M = \Sigma^{-1}$.\\
-    对于降维之后的，取你要的d'维度即可.\\
+    所以其不是标准的距离度量，QED。\\
+    (4)对于多类LDA来说，有$S_w = \sum_{i=1}^{n}S_wi, S_b = \sum_{i=1}^{n} (\mu_i - \mu)^T (\mu_i - \mu)$，对于这个的解如下$S_b W = \lambda S_w W$,为了对应马氏距离，其M可以这样表示$M = W^TW$,W取你要的d维度的$S_w^{-1}S_b$的特征值对应的特征向量即可\\
+    对于PCA来说，$M = W^TW$.同理取$\Sigma$你要的d维度特征值的特征向量。\\
     相同点：他们都是将数据从高维降维到低维的技术，并且在降维之后都是用样本在低维空间的欧式距离作为距离度量，并选取不同的M矩阵来反映其特点的。\\
     不同点：PCA是无监督的，考虑的是最大可分和最小重构，而LDA是一种监督的降维方法，目的是最大化类间散度和最小类内散度。且他们的M选取不一样，PCA考虑的是特征值分解之后的特征值更多，而LDA考虑的是数据之间的聚类和簇之间的关系，是一种Global和local的衡量方式。\\
 	\part
