@@ -194,7 +194,7 @@ $D_u = \{\boldsymbol{x}_{l+1}, \boldsymbol{x}_{l+2}, \dots, \boldsymbol{x}_{l+u}
     \]
     对于这个式子我们分开求导:\\
     \[
-        \frac{\partial LL(D_l)}{\partial \mu_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\mu_i}= \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i} \Sigma_i^{-1}(x_j - \mu_i)
+        \frac{\partial LL(D_l)}{\partial \mu_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{ \partial p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\partial \mu_i}= \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i} \Sigma_i^{-1}(x_j - \mu_i)
     \]
     \[
         \frac{\partial LL(D_u)}{\partial \mu_i} = \sum_{\boldsymbol{x}\in D_u} \gamma_{ij} \cdot\Sigma_i^{-1}(x_j - \mu_i)
@@ -207,6 +207,32 @@ $D_u = \{\boldsymbol{x}_{l+1}, \boldsymbol{x}_{l+2}, \dots, \boldsymbol{x}_{l+u}
     \[
         \boldsymbol{\mu}_i = \frac{1}{\sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} + l_i} \left( \sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} \boldsymbol{x}_j + \sum_{(\boldsymbol{x}_j, y_j) \in D_l \land y_j = i} \boldsymbol{x}_j \right) 
     \]
+    (2.2)其次我们证明第二个式子，本质还是对于$\Sigma$求导等于0，所以还是使用分开求导的规则:
+    \[
+        \frac{\partial LL(D_l)}{\partial \mu_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{\partial p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\partial\Sigma_i}
+    \]
+    \[
+        = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i} (\Sigma_i^{-1} (\boldsymbol{x_j} - \mu_i)(\boldsymbol{x_j} - \mu_i)^\top - \boldsymbol{I})\cdot\frac{1}{2}\Sigma_i^{-1}
+    \]
+    同理对于另一部分求导可以得到:\\
+    \[
+        \frac{\partial LL(D_u)}{\partial \mu_i} = \sum_{\boldsymbol{x}\in D_u} \gamma_{ij} \cdot(\Sigma_i^{-1}(\boldsymbol{x_j} - \mu_i)(\boldsymbol{x_j} - \mu_i)^\top - \boldsymbol{I})\cdot\frac{1}{2}\Sigma_i^{-1}
+    \]
+    然后跟2.1操作一样，相加，同时右乘上$2\Sigma_i$，得到:
+    \[
+        (\sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} + l_i)\boldsymbol{\Sigma}_i = \left( \sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} (\boldsymbol{x}_j - \boldsymbol{\mu}_i)(\boldsymbol{x}_j - \boldsymbol{\mu}_i)^\top \right.
+    \]
+    \[
+        \quad \left. + \sum_{(\boldsymbol{x}_j, y_j) \in D_l \land y_j = i} (\boldsymbol{x}_j - \boldsymbol{\mu}_i)(\boldsymbol{x}_j - \boldsymbol{\mu}_i)^\top \right) , \\
+    \]
+    移项可得：
+    \[
+        \boldsymbol{\Sigma}_i = \frac{1}{(\sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} + l_i)}\left( \sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} (\boldsymbol{x}_j - \boldsymbol{\mu}_i)(\boldsymbol{x}_j - \boldsymbol{\mu}_i)^\top \right.
+    \]
+    \[
+        \quad \left. + \sum_{(\boldsymbol{x}_j, y_j) \in D_l \land y_j = i} (\boldsymbol{x}_j - \boldsymbol{\mu}_i)(\boldsymbol{x}_j - \boldsymbol{\mu}_i)^\top \right) , \\
+    \]
+    (2.3)
 
 \end{parts}
 \end{solution}
