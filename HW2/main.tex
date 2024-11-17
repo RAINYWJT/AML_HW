@@ -194,12 +194,12 @@ $D_u = \{\boldsymbol{x}_{l+1}, \boldsymbol{x}_{l+2}, \dots, \boldsymbol{x}_{l+u}
     \]
     对于这个式子我们分开求导:\\
     \[
-        \frac{\partial LL(D_l)}{\partial \mu_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{ \partial p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\partial \mu_i}= \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i} \Sigma_i^{-1}(x_j - \mu_i)
+        \frac{\partial LL(D_l)}{\partial \mu_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{ \partial p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\partial \mu_i}= \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i} \Sigma_i^{-1}(\boldsymbol{x_j} - \mu_i)
     \]
     \[
-        \frac{\partial LL(D_u)}{\partial \mu_i} = \sum_{\boldsymbol{x}\in D_u} \gamma_{ij} \cdot\Sigma_i^{-1}(x_j - \mu_i)
+        \frac{\partial LL(D_u)}{\partial \mu_i} = \sum_{\boldsymbol{x}\in D_u} \gamma_{ij} \cdot\Sigma_i^{-1}(\boldsymbol{x_j} - \mu_i)
     \]
-    所以综上，将二者相加等于0，即可得到:
+    所以综上，将二者相加等于0，左乘$\Sigma_i$即可得到:
     \[
         (\sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} + l_i )\boldsymbol{\mu}_i = \left( \sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} \boldsymbol{x}_j + \sum_{(\boldsymbol{x}_j, y_j) \in D_l \land y_j = i} \boldsymbol{x}_j \right)
     \]  
@@ -209,7 +209,7 @@ $D_u = \{\boldsymbol{x}_{l+1}, \boldsymbol{x}_{l+2}, \dots, \boldsymbol{x}_{l+u}
     \]
     (2.2)其次我们证明第二个式子，本质还是对于$\Sigma$求导等于0，所以还是使用分开求导的规则:
     \[
-        \frac{\partial LL(D_l)}{\partial \mu_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{\partial p(x_j|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\partial\Sigma_i}
+        \frac{\partial LL(D_l)}{\partial \mu_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{\partial p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\partial\Sigma_i}
     \]
     \[
         = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i} (\Sigma_i^{-1} (\boldsymbol{x_j} - \mu_i)(\boldsymbol{x_j} - \mu_i)^\top - \boldsymbol{I})\cdot\frac{1}{2}\Sigma_i^{-1}
@@ -232,7 +232,33 @@ $D_u = \{\boldsymbol{x}_{l+1}, \boldsymbol{x}_{l+2}, \dots, \boldsymbol{x}_{l+u}
     \[
         \quad \left. + \sum_{(\boldsymbol{x}_j, y_j) \in D_l \land y_j = i} (\boldsymbol{x}_j - \boldsymbol{\mu}_i)(\boldsymbol{x}_j - \boldsymbol{\mu}_i)^\top \right) , \\
     \]
-    (2.3)
+    (2.3)同理，类似于第九章的高斯混合模型，可以写出其拉格朗日函数:
+    \[
+        L(D_l \cup D_u \cup \lambda) = LL(D_l) + LL(D_u) + \lambda(\sum_{i=1}^{N} \alpha_i - 1) 
+    \]
+    同上，对于两个分开部分求导:
+    \[
+        \frac{\partial LL(D_l)}{\partial \alpha_i}  = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i}\frac{1}{\alpha_i p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}\cdot\frac{\partial p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})}{\partial\alpha_i} = \sum_{(\boldsymbol{x}_j, y_j) \in D_l \wedge y_j = i} \frac{1}{\alpha_i} = \frac{l_i}{\alpha_i}
+    \]
+    \[
+        \frac{\partial LL(D_u)}{\partial \alpha_i}  = \sum_{\boldsymbol{x}\in D_u} \frac{1}{\sum_{i=1}^{N} \alpha_i \cdot p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})} \cdot p(\boldsymbol{x}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})
+    \]
+    所以得到公式:
+    \[
+        \frac{\partial L(D_l \cup D_u \cup \lambda)}{\partial \alpha_i} = \frac{l_i}{\alpha_i} + \sum_{\boldsymbol{x}\in D_u} \frac{1}{\sum_{i=1}^{N} \alpha_i \cdot p(\boldsymbol{x_j}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i})} \cdot p(\boldsymbol{x}|\boldsymbol{\mu_i}, \boldsymbol{\Sigma_i}) + \lambda
+    \]
+    另其等于0:
+    \[  
+        l_i + \sum_{x \in D_u} \gamma_{ji} + \lambda \alpha_i = 0
+    \]
+    对i求和,可以发现有下面关系:
+    \[
+        l + u + \lambda = 0 ,l + u = m
+    \]
+    所以可得:
+    \[
+        \alpha_i = \frac{1}{m} \left( \sum_{\boldsymbol{x}_j \in D_u} \gamma_{ji} + l_i \right) . 
+    \]
 
 \end{parts}
 \end{solution}
@@ -265,9 +291,70 @@ $D_u = \{\boldsymbol{x}_{l+1}, \boldsymbol{x}_{l+2}, \dots, \boldsymbol{x}_{l+u}
 
 \begin{solution}
 \begin{parts}
+    \part 描述如下:\\
+    LoRA是一种深度学习的模型微调技术，核心思想是引入low rank的矩阵进行对于参数的调参，对于权重矩阵
+    LoRA认为其可以被分解为两个低秩矩阵来表述，比如$W = UV$,其中$l*n = l*k @ k*n$,那么其权重矩阵的
+    更新就可以写为$W_{new} = W + UV $.在训练过程中呢，只对于UV进行优化，从而减少了参数数量，使得计算成本降低.\\
+    有作用的原因:\\
+    1.低秩矩阵本身降低了计算开销和计算成本，并不需要一次更新所有的参数，提高了微调的效率。\\
+    2.LoRA可以用低秩矩阵调整其行为任务，使得计算更稳定.\\
+    3.LoRA降低了更新参数的数量和维度，使得梯度计算更高效.\\
+    4.根据11章对于稀疏矩阵的分析，包括压缩感知和稀疏表示，这样表示矩阵作为学习目标是快速高效的，优化起来也比较容易。\\
+
     \part 
-    
-    \part
+    下面给出证明,对于这个式子我们可以进行化简，由于其满足laplace图形式:
+    \[
+        E(f) = \frac{1}{2} \sum_{i=1}^m \sum_{j=1}^m (W)_{ij} \left( f(\boldsymbol{x}_i) - f(\boldsymbol{x}_j) \right)^2
+    \]
+    进一步化简得到:
+    \[
+        E(f) = \boldsymbol{f}^T(\boldsymbol{D} - \boldsymbol{W})\boldsymbol{f}
+    \]
+    其中:$\boldsymbol{f}$是一个分块矩阵，可以由标记数据和未标记数据构成:
+    \[
+        \boldsymbol{f} = [\boldsymbol{f_l}, \boldsymbol{f_u}]
+    \]
+    同理，D是一个对角矩阵，$\boldsymbol{D} = diag(d_1, ..., d_m)$构成。所以D和W都可以表示为分块矩阵形式:\\
+    \[
+        \boldsymbol{D} = \begin{pmatrix}
+                        \boldsymbol{D_{ll}} & 0 \\
+                        0 & \boldsymbol{D_{uu}}
+        \end{pmatrix},                      
+        \boldsymbol{W} = \begin{pmatrix}
+            \boldsymbol{W_{ll}} & \boldsymbol{W_{lu}} \\
+            \boldsymbol{W_{ul}} & \boldsymbol{W_{uu}}
+        \end{pmatrix},  
+    \]
+    那么对于这个式子，我们可以简单的记为:
+    \[
+        \boldsymbol{L} = \boldsymbol{D} - \boldsymbol{W}
+    \]
+    所以对于E(f)可以表示为:\\
+    \[
+        E(f) = \frac{1}{2} 
+        \begin{pmatrix}
+            \boldsymbol{f_l}^\top, \boldsymbol{f_u}^\top
+        \end{pmatrix}
+        \begin{pmatrix}
+            \boldsymbol{L_{ll}} & \boldsymbol{L_{lu}} \\
+            \boldsymbol{L_{ul}} & \boldsymbol{L_{uu}}
+        \end{pmatrix}
+        \begin{pmatrix}
+            \boldsymbol{f_{l}}\\
+            \boldsymbol{f_{u}} 
+        \end{pmatrix}
+    \]
+    对于这个式子，我们可以进行化简，得到:
+    \[
+        \frac{\partial E(f)}{\partial \boldsymbol{f_u}} = 
+        2 \boldsymbol{f_u}^\top \boldsymbol{L_{uu}} + 
+        2 \boldsymbol{L_{ul}} \boldsymbol{f_u} = 0
+    \]
+    所以可以解得答案为:
+    \[
+        \boldsymbol{f_u} = - \boldsymbol{L_{uu}}^{-1} \boldsymbol{L_{ul}} \boldsymbol{f_l}
+    \]
+
 \end{parts}
 \end{solution}
 

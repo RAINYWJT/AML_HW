@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  16 NOV 2024 23:55
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  17 NOV 2024 19:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -642,26 +642,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 216--218
  []
 
 [3] [4] [5]
+Underfull \hbox (badness 10000) in paragraph at lines 294--303
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 316--318
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 331--333
+
+ []
+
+[6]
 This exam contains 3 questions with 6 parts, 0 subparts, and 0 subsubparts.
 (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2022/07/14>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 16317 strings out of 474773
- 342268 string characters out of 5757724
+ 16319 strings out of 474773
+ 342326 string characters out of 5757724
  1956839 words of memory out of 5000000
- 38268 multiletter control sequences out of 15000+600000
+ 38270 multiletter control sequences out of 15000+600000
  568240 words of font info for 93 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 74i,20n,81p,612b,699s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 74i,20n,81p,612b,707s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (5 pages).
+Output written on main.pdf (6 pages).
