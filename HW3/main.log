@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  13 DEC 2024 19:10
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.29)  14 DEC 2024 13:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -635,7 +635,11 @@ File: dag.pdf Graphic file (type pdf)
 ] [2] [3] [4]
 File: image.png Graphic file (type bmp)
 <image.png>
- [5] [6]
+ [5]
+Missing character: There is no 贪 (U+8D2A) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no 心 (U+5FC3) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ε (U+03B5) in font [lmroman10-regular]:mapping=tex-text;!
+[6] [7] [8]
 This exam contains 2 questions with 5 parts, 0 subparts, and 0 subsubparts.
 (./main.aux)
  ***********
@@ -646,12 +650,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 17004 strings out of 474773
- 359753 string characters out of 5757724
+ 17005 strings out of 474773
+ 359761 string characters out of 5757724
  1949839 words of memory out of 5000000
- 38906 multiletter control sequences out of 15000+600000
+ 38907 multiletter control sequences out of 15000+600000
  570528 words of font info for 105 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  74i,10n,90p,379b,709s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (6 pages).
+Output written on main.pdf (8 pages).

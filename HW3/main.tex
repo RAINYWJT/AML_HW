@@ -252,13 +252,93 @@
     请你根据式(15),(16),尝试推理出Sarsa算法的更新公式，即图二中的步骤6.
 
 
-\end{parts}
+\end{parts} 
 
 \begin{solution}
 \begin{parts}
 	\part
-	\part
-        \part
+    （1）.首先给出我们需要的TV和TV'的定义式子：
+    \[
+        TV =   \max _{a \in \mathcal{A}}\left\{r(s, a)+\gamma \sum_{s^{\prime} \in \mathcal{S}} P\left(s^{\prime} \mid s, a\right) V\left(s^{\prime}\right)\right\}
+    \]
+    \[
+        TV' =   \max _{a \in \mathcal{A}}\left\{r(s, a)+\gamma \sum_{s^{\prime} \in \mathcal{S}} P\left(s^{\prime} \mid s, a\right) V'\left(s^{\prime}\right)\right\}
+    \]
+    则根据三角不等式:
+    \[
+        | TV - TV' | \leq \max _{a \in \mathcal{A}} \gamma \left\{\sum_{s^{\prime} \in \mathcal{S}} P\left(s^{\prime} \mid s, a\right) (V\left(s^{\prime}\right) -  V'\left(s^{\prime}\right))\right\}
+    \]
+    对于其中$\sum_{s^{\prime} \in \mathcal{S}} P\left(s^{\prime} \mid s, a\right) = 1$ 而且根据凸优化和无穷范数的定义可以得到:
+    \[
+        || V - V'||_{\infty}  = sup_{s\in S} |V(s) - V'(s)| =  sup_{s\in S} \left\{\sum_{s^{\prime} \in \mathcal{S}} P\left(s^{\prime} \mid s, a\right) (V\left(s^{\prime}\right) -  V'\left(s^{\prime}\right))\right\}
+    \]
+    所以带入原式子可以得到:
+    \[
+        | TV - TV' | \leq \gamma || V - V'||_{\infty} 
+    \]  
+    那么根据原式子可以得到:
+    \[
+        || TV - TV'||_{\infty} = sup_{s\in S}  | TV - TV' | \leq \gamma || V - V'||_{\infty} 
+    \]
+    所以即证明了bellman算子是一个压缩算子。\\
+    （2）.对于这个问题，由题目可以得到:
+    \[
+        V^* = TV^*, V^{k+1} = TV^k
+    \]
+    所以可以有:
+    \[
+        ||V^{k+1} - V^* ||_\infty = || TV^k - TV^* ||_\infty  \leq \gamma || V^k  - V^*||_\infty 
+    \]
+    所以根据压缩算子的迭代:
+    \[
+        || V^k  - V^*||_\infty  \leq \gamma^k || V^0 - V^*||_\infty 
+    \]
+    因为$\gamma < 1$，所以经过k轮次迭代之后，$\gamma^k \approx 0$, 则:
+    \[
+        \gamma^k || V^0 - V^*||_\infty  \approx 0
+    \]
+    所以原式子证明则有:
+    \[
+        || V^k  - V^*||_\infty  \approx 0 
+    \]
+    所以收敛性证明完毕。
+	\part 
+    （1）.对于如何引入一个q(x)来帮助我们估计，这种情况存在于异策略蒙特卡洛强化学习里面。对于异策略，
+    行动策略和目标策略不是一个策略的时候，相当于我们在同策略的时候，我们用的是$\epsilon-贪心$来做的，
+    所有的动作策略也基于这个贪心，而现在在异策略的情况下，只用贪心来做衡量，而选择不同的动作策略。假设当
+    前有两个不同策略来产生轨迹的时候，被采样概率就会不一样。
+
+    根据题目假设，假如p(x)采样困难，我们可以引入一个q(x)策略，他的采样比较简单，来估计E(q(x))的期望。这
+    就是重要性采样:
+    \[
+        E[f] = \int_x p(x)f(x) \,dx
+    \]
+    那么此时的期望就是(从p上采样估计的):
+    \[
+        \hat{E}[f] = \frac{1}{m}\sum_{i=1}^{m} f(x)
+    \]
+    但是如果p(x)很难做，我们引入一个q(x):
+    \[
+        E[f] = \int_x q(x) \frac{p(x)}{q(x)}f(x) \,dx
+    \]
+    此时期望就是:
+    \[
+        \hat{E}[f] = \frac{1}{m} \sum_{i=1}^{m} \frac{p(x_i)}{q(x_i)} f(x_i)
+    \]
+    这样我们就通过了另一个分布采样来估计原不是很好估计的分布采样下的期望，这就是重要性采样。\\
+    （2）.事实上，同策略蒙特卡洛强化学习并不会用到重要性采样这个方法，就跟我在上一问说的一样：
+
+    对于同策略蒙特卡洛算法，对采样轨迹中的每一对状态-动作，记录其后的奖赏值之和，
+    作为该状态-动作的一次累积奖赏，通过多次采样后，使用累积奖赏的平均作为状态-动作值的估计，
+    并引入ε-贪心策略保证采样的多样性。这种算法保证了策略和动作是一样的。
+
+    而对于异策略蒙特卡洛算法，我们只是用贪心去衡量策略评估的时候，但是对于算法的策略改进，
+    并不利用原始策略，即可以理解为目标策略和行动策略并不是同一个。
+
+    综合看下来就是同策略的其实并不需要调整权重之类的，如果我们把$\frac{P^{\pi}}{P^{\pi'}} = \prod_{i=0}^{T-1} \frac{\pi(x_i, a_i)}{\pi'(x_i, a_i)}$
+    看作一个权重的话，而异策略其实更考虑到新策略（更简单的）带来的影响并进行学习。这也可能导致，同策略对于简单
+    环境更容易学习，而异策略对于复杂环境的适应性更高。
+    \part
 \end{parts}
 \end{solution}
 
