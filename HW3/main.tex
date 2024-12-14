@@ -249,7 +249,7 @@
     &= \sum_{x' \in X} P^a_{x \to x'} \left( R^a_{x \to x'} + \gamma \sum_{a' \in A} \pi(x', a') Q^\pi(x', a') \right).
     \end{align}
 
-    请你根据式(15),(16),尝试推理出Sarsa算法的更新公式，即图二中的步骤6.
+    请你根据式(12),(13),尝试推理出Sarsa算法的更新公式，即图二中的步骤6.
 
 
 \end{parts} 
@@ -338,7 +338,39 @@
     综合看下来就是同策略的其实并不需要调整权重之类的，如果我们把$\frac{P^{\pi}}{P^{\pi'}} = \prod_{i=0}^{T-1} \frac{\pi(x_i, a_i)}{\pi'(x_i, a_i)}$
     看作一个权重的话，而异策略其实更考虑到新策略（更简单的）带来的影响并进行学习。这也可能导致，同策略对于简单
     环境更容易学习，而异策略对于复杂环境的适应性更高。
+    
     \part
+    为了证明SARSA算法的递推公式，我们首先可以得到SARSA的增量更新公式:
+    \[
+        Q_{t+1}^\pi (x, a) = Q_{t}^\pi (x, a) + \frac{1}{t + 1}(r_{t+1} - Q_{t}^\pi (x, a))
+    \]
+    目标公式如下：
+    \[
+        Q_{t+1}^\pi (x, a) = Q_{t}^\pi (x, a) + \alpha(R_{x\rightarrow x'}^a + \gamma  Q_{t}^\pi (x', a')- Q_{t}^\pi (x, a))
+    \]
+    增量公式跟我们目标公式进行对比可以发现,我们只需要证明：
+    \[
+        \alpha = \frac{1}{t+1}, r_{t+1} = R_{x\rightarrow x'}^a + \gamma  Q_{t}^\pi (x', a')
+    \]
+    其中第一个式子是一定成立的，我们一般都令做$\alpha = \frac{1}{t+ 1}$.所以我们要证明的就是第二个式子了。
+    第二个式子的证明关键在于，bellman期望公式的运用。根据Q-function的状态动作值函数可以得到:
+    \[
+        Q^\pi (x, a) = E[\sum_{t=1}^{T} r_t | x, a] = \sum_{x'\in X} P_{x\rightarrow x'}^a 
+        (R_{x\rightarrow x'}^a + V^\pi(x'))
+    \]
+    那么对于公式12，很自然的就可以得到根据上面公式:
+    \[
+        Q^\pi (x, a) = E[\sum_{t=1}^{T} r_t | x, a]
+    \]
+    对于公式13，我们也尝试把他转换为期望形式来表达:
+    \[
+        Q^\pi (x, a) = E[\sum_{t=0}^{T-1} (R_{x\rightarrow x'}^a  + \gamma E[Q^\pi (x', a')])|x, a]
+    \]
+    由于这两个的形式是相等的，对于其中的第$r_{t+1}$个状态，等价于：当前步骤reward+未来步骤的期望。整个步骤$r_t$取决于前面的x',a'的期望，则这一步可以改写为:
+    \[
+        r_{t+1} = R_{x\rightarrow x'}^a + \gamma Q^\pi (x', a')
+    \]
+    所以我们即通过式子12，13的期望等价性证明了这个问题。
 \end{parts}
 \end{solution}
 
